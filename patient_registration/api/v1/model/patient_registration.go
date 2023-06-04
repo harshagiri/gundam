@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"strconv"
 
-	"../internal/service"
+	"github.com/harshagiri/gundam/patient_registration/internal/service"
 )
 
 type PatientRegistrationAPI struct {

@@ -4,7 +4,7 @@ import (
 	"database/sql"
 	"log"
 
-	"../../internal/model"
+	"github.com/harshagiri/gundam/patient_registration/internal/model"
 )
 
 type PatientRegistrationRepository struct {

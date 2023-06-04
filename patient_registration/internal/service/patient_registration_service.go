@@ -1,8 +1,8 @@
 package service
 
 import (
-	"../../internal/model"
-	"../../internal/repository"
+	"github.com/harshagiri/gundam/patient_registration/internal/model"
+	"github.com/harshagiri/gundam/patient_registration/internal/repository"
 )
 
 type PatientRegistrationService struct {
