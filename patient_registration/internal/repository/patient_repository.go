@@ -107,7 +107,7 @@ func (r *patientRepository) CreatePatient(patient *model.Patient) (int64, error)
 	return id, nil
 }
 
-func (r *patientRepository) UpdatePatient(patient *model.Patient) error {
+func (r *patientRepository) UpdatePatient(patient *model.Patient) (int64, error) {
 	// Perform any necessary validations or data manipulation
 
 	// Execute the SQL query to update the patient in the database
@@ -117,10 +117,10 @@ func (r *patientRepository) UpdatePatient(patient *model.Patient) error {
 		patient.Address, patient.CreatedAt, patient.ID)
 	if err != nil {
 		// Handle the error
-		return err
+		return 0, err
 	}
 
-	return nil
+	return 0, nil
 }
 
 func (r *patientRepository) DeletePatient(id int) error {

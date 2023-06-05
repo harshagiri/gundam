@@ -122,10 +122,10 @@ func (r *patientRegistrationRepository) UpdateRegistration(patient_registration 
 		patient_registration.Address, patient_registration.CreatedAt, patient_registration.ID)
 	if err != nil {
 		// Handle the error
-		return err
+		return 0, err
 	}
 
-	return nil
+	return 0, nil
 }
 
 func (r *patientRegistrationRepository) DeleteRegistration(id int) error {
