@@ -8,6 +8,7 @@ import (
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/gorilla/mux"
+	"github.com/harshagiri/gundam/patient_registration/internal/config"
 	"github.com/harshagiri/gundam/patient_registration/internal/repository"
 	"github.com/harshagiri/gundam/patient_registration/internal/service"
 )
