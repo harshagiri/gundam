@@ -3,6 +3,9 @@ package handler
 import (
 	"encoding/json"
 	"net/http"
+	"strconv"
+
+	"github.com/go-chi/chi/v5"
 
 	"github.com/harshagiri/gundam/patient_registration/internal/model"
 	"github.com/harshagiri/gundam/patient_registration/internal/service"
@@ -35,7 +38,8 @@ func (h *PatientHandler) GetPatients(w http.ResponseWriter, r *http.Request) {
 
 func (h *PatientHandler) GetPatientByID(w http.ResponseWriter, r *http.Request) {
 	// Parse the ID from the request parameters or URL path
-	// ...
+	idParam := chi.URLParam(r, "id")
+	id, err := strconv.Atoi(idParam)
 
 	// Call the service method to get the patient by ID
 	patient, err := h.patientService.GetPatientByID(id)

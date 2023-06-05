@@ -8,7 +8,8 @@ import (
 )
 
 type PatientRepository interface {
-	// Define the methods of the PatientRepository interface
+	GetAllPatients() ([]*model.Patient, error)
+	GetPatientByID(id int) (*model.Patient, error)
 }
 
 type patientRepository struct {
@@ -82,4 +83,51 @@ func (r *patientRepository) GetPatientByID(id int) (*model.Patient, error) {
 	return patient, nil
 }
 
-// Implement other repository methods such as CreatePatient, UpdatePatient, DeletePatient, etc.
+func (r *patientRepository) CreatePatient(patient *model.Patient) (*model.Patient, error) {
+	// Perform any necessary validations or data manipulation
+
+	// Execute the SQL query to insert the patient into the database
+	result, err := r.db.Exec("INSERT INTO patients (name, age) VALUES (?, ?)", patient.Name, patient.Age)
+	if err != nil {
+		// Handle the error
+		return nil, err
+	}
+
+	// Get the ID of the created patient
+	id, err := result.LastInsertId()
+	if err != nil {
+		// Handle the error
+		return nil, err
+	}
+
+	// Set the ID of the patient object
+	patient.ID = int(id)
+
+	return patient, nil
+}
+
+func (r *patientRepository) UpdatePatient(patient *model.Patient) error {
+	// Perform any necessary validations or data manipulation
+
+	// Execute the SQL query to update the patient in the database
+	_, err := r.db.Exec("UPDATE patients SET name = ?, age = ? WHERE id = ?", patient.Name, patient.Age, patient.ID)
+	if err != nil {
+		// Handle the error
+		return err
+	}
+
+	return nil
+}
+
+func (r *patientRepository) DeletePatient(id int) error {
+	// Perform any necessary validations or data manipulation
+
+	// Execute the SQL query to delete the patient from the database
+	_, err := r.db.Exec("DELETE FROM patients WHERE id = ?", id)
+	if err != nil {
+		// Handle the error
+		return err
+	}
+
+	return nil
+}

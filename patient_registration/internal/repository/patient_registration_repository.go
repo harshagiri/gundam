@@ -8,6 +8,8 @@ import (
 )
 
 type PatientRegistrationRepository interface {
+	GetAllRegistrations() ([]*model.PatientRegistration, error)
+	GetRegistrationByID(id int) (*model.PatientRegistration, error)
 }
 
 type patientRegistrationRepository struct {
