@@ -1,4 +1,4 @@
-package main
+package config
 
 import (
 	"fmt"
@@ -18,13 +18,7 @@ type Config struct {
 	}
 }
 
-func main() {
-	config := LoadConfig()
-	fmt.Println(config.Server.Port)
-	fmt.Println(config.Database.Host)
-}
-
-func LoadConfig() Config {
+func LoadConfig() (Config, error) {
 	viper.SetDefault("Server.Port", 8080)
 	viper.SetDefault("Database.Host", "localhost")
 	viper.SetDefault("Database.Port", 3306)
@@ -44,5 +38,9 @@ func LoadConfig() Config {
 		panic(fmt.Errorf("failed to unmarshal config file: %s", err))
 	}
 
-	return config
+	return config, nil
+}
+
+func (c Config) DatabaseConnectionString() string {
+	return fmt.Sprintf("%s:%s@tcp(%s:%d)/database_name", c.Database.User, c.Database.Password, c.Database.Host, c.Database.Port)
 }
