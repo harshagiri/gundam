@@ -48,7 +48,7 @@ func (api *PatientRegistrationAPI) GetRegistrationByID(w http.ResponseWriter, r 
 	jsonResponse(w, registration)
 }
 
-func jsonResponse(w http.ResponseWriter, data interface{}) {
+func (api *PatientRegistrationAPI) jsonResponse(w http.ResponseWriter, data interface{}) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(data)
