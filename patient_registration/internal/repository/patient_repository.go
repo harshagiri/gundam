@@ -83,34 +83,35 @@ func (r *patientRepository) GetPatientByID(id int) (*model.Patient, error) {
 	return patient, nil
 }
 
-func (r *patientRepository) CreatePatient(patient *model.Patient) (*model.Patient, error) {
-	// Perform any necessary validations or data manipulation
-
+func (r *patientRepository) CreatePatient(patient *model.Patient) (int64, error) {
 	// Execute the SQL query to insert the patient into the database
-	result, err := r.db.Exec("INSERT INTO patients (name, age) VALUES (?, ?)", patient.Name, patient.Age)
+	result, err := r.db.Exec("INSERT INTO patients (first_name, last_name, date_of_birth, gender, email, phone_number, address, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+		patient.FirstName, patient.LastName, patient.DateOfBirth,
+		patient.Gender, patient.Email, patient.PhoneNumber,
+		patient.Address, patient.CreatedAt)
 	if err != nil {
-		// Handle the error
-		return nil, err
+		log.Printf("Failed to insert patient: %v", err)
+		return 0, err
 	}
 
-	// Get the ID of the created patient
+	// Get the ID of the inserted patient
 	id, err := result.LastInsertId()
 	if err != nil {
-		// Handle the error
-		return nil, err
+		log.Printf("Failed to get last inserted ID: %v", err)
+		return 0, err
 	}
 
-	// Set the ID of the patient object
-	patient.ID = int(id)
-
-	return patient, nil
+	return id, nil
 }
 
 func (r *patientRepository) UpdatePatient(patient *model.Patient) error {
 	// Perform any necessary validations or data manipulation
 
 	// Execute the SQL query to update the patient in the database
-	_, err := r.db.Exec("UPDATE patients SET name = ?, age = ? WHERE id = ?", patient.Name, patient.Age, patient.ID)
+	_, err := r.db.Exec("UPDATE patients SET first_name = ?, last_name = ?, date_of_birth = ?, gender = ?, email = ?, phone_number = ?, address = ?, created_at = ? WHERE id = ?",
+		patient.FirstName, patient.LastName, patient.DateOfBirth,
+		patient.Gender, patient.Email, patient.PhoneNumber,
+		patient.Address, patient.CreatedAt, patient.ID)
 	if err != nil {
 		// Handle the error
 		return err
