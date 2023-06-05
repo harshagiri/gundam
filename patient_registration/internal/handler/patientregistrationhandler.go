@@ -35,7 +35,7 @@ func (h *PatientRegistrationHandler) GetRegistrations(w http.ResponseWriter, r *
 func (h *PatientRegistrationHandler) GetRegistrationByID(w http.ResponseWriter, r *http.Request) {
 	// Parse the ID from the request parameters or URL path
 	// ...
-
+	var id = 0
 	// Call the service method to get the registration by ID
 	registration, err := h.registrationService.GetRegistrationByID(id)
 	_ = registration
@@ -58,7 +58,7 @@ func (h *PatientRegistrationHandler) CreateRegistration(w http.ResponseWriter, r
 	}
 
 	// Call the service method to create the registration
-	createdRegistration, err := h.registrationService.CreateRegistration(registration)
+	createdRegistration, err := h.registrationService.CreateRegistration(&registration)
 	if err != nil {
 		http.Error(w, "Failed to create registration", http.StatusInternalServerError)
 		return
@@ -78,7 +78,7 @@ func (h *PatientRegistrationHandler) CreateRegistration(w http.ResponseWriter, r
 func (h *PatientRegistrationHandler) GetRegistration(w http.ResponseWriter, r *http.Request) {
 	// Parse the ID from the request parameters or URL path
 	// ...
-
+	var id = 0
 	// Call the service method to get the registration by ID
 	registration, err := h.registrationService.GetRegistrationByID(id)
 	if err != nil {
@@ -110,7 +110,7 @@ func (h *PatientRegistrationHandler) UpdateRegistration(w http.ResponseWriter, r
 	}
 
 	// Call the service method to update the registration
-	updatedRegistration, err := h.registrationService.UpdateRegistration(id, registration)
+	updatedRegistration, err := h.registrationService.UpdateRegistration(&registration)
 	if err != nil {
 		http.Error(w, "Failed to update registration", http.StatusInternalServerError)
 		return
@@ -130,7 +130,7 @@ func (h *PatientRegistrationHandler) UpdateRegistration(w http.ResponseWriter, r
 func (h *PatientRegistrationHandler) DeleteRegistration(w http.ResponseWriter, r *http.Request) {
 	// Parse the ID from the request parameters or URL path
 	// ...
-
+	var id = 0
 	// Call the service method to delete the registration
 	err := h.registrationService.DeleteRegistration(id)
 	if err != nil {

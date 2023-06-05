@@ -10,6 +10,9 @@ import (
 type PatientRegistrationRepository interface {
 	GetAllRegistrations() ([]*model.PatientRegistration, error)
 	GetRegistrationByID(id int) (*model.PatientRegistration, error)
+	CreateRegistration(patient_registration *model.PatientRegistration) (int64, error)
+	UpdateRegistration(patient_registration *model.PatientRegistration) (int64, error)
+	DeleteRegistration(id int) error
 }
 
 type patientRegistrationRepository struct {
@@ -88,3 +91,52 @@ func (r *patientRegistrationRepository) GetRegistrationByID(id int) (*model.Pati
 }
 
 // Implement other repository methods such as CreateRegistration, UpdateRegistration, DeleteRegistration, etc.
+func (r *patientRegistrationRepository) CreateRegistration(patient_registration *model.PatientRegistration) (int64, error) {
+	// Execute the SQL query to insert the patient into the database
+	result, err := r.db.Exec("INSERT INTO patients (first_name, last_name, date_of_birth, gender, email, phone_number, address, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+		patient_registration.FirstName, patient_registration.LastName, patient_registration.DateOfBirth,
+		patient_registration.Gender, patient_registration.Email, patient_registration.PhoneNumber,
+		patient_registration.Address, patient_registration.CreatedAt)
+	if err != nil {
+		log.Printf("Failed to insert patient: %v", err)
+		return 0, err
+	}
+
+	// Get the ID of the inserted patientss
+	id, err := result.LastInsertId()
+	if err != nil {
+		log.Printf("Failed to get last inserted ID: %v", err)
+		return 0, err
+	}
+
+	return id, nil
+}
+
+func (r *patientRegistrationRepository) UpdateRegistration(patient_registration *model.PatientRegistration) (int64, error) {
+	// Perform any necessary validations or data manipulation
+
+	// Execute the SQL query to update the patient in the database
+	_, err := r.db.Exec("UPDATE patients SET first_name = ?, last_name = ?, date_of_birth = ?, gender = ?, email = ?, phone_number = ?, address = ?, created_at = ? WHERE id = ?",
+		patient_registration.FirstName, patient_registration.LastName, patient_registration.DateOfBirth,
+		patient_registration.Gender, patient_registration.Email, patient_registration.PhoneNumber,
+		patient_registration.Address, patient_registration.CreatedAt, patient_registration.ID)
+	if err != nil {
+		// Handle the error
+		return err
+	}
+
+	return nil
+}
+
+func (r *patientRegistrationRepository) DeleteRegistration(id int) error {
+	// Perform any necessary validations or data manipulation
+
+	// Execute the SQL query to delete the patient from the database
+	_, err := r.db.Exec("DELETE FROM patients WHERE id = ?", id)
+	if err != nil {
+		// Handle the error
+		return err
+	}
+
+	return nil
+}
