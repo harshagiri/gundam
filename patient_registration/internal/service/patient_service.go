@@ -23,30 +23,30 @@ func (s *PatientService) GetPatientByID(id int) (*model.Patient, error) {
 	return s.patientRepo.GetPatientByID(id)
 }
 
-func (s *PatientService) CreatePatient(patient *model.Patient) error {
+func (s *PatientService) CreatePatient(patient *model.Patient) (int64, error) {
 	// Perform any necessary validations or business logic checks
 
 	// Call the repository to create the patient
 	result, err := s.patientRepo.CreatePatient(patient)
 	if err != nil {
 		// Handle the error
-		return err
+		return 0, err
 	}
 
 	return result, nil
 }
 
-func (s *PatientService) UpdatePatient(patient *model.Patient) error {
+func (s *PatientService) UpdatePatient(patient *model.Patient) (int64, error) {
 	// Perform any necessary validations or business logic checks
 
 	// Call the repository to update the patient
-	err := s.patientRepo.UpdatePatient(patient)
+	result, err := s.patientRepo.UpdatePatient(patient)
 	if err != nil {
 		// Handle the error
-		return err
+		return 0, err
 	}
 
-	return nil
+	return result, nil
 }
 
 func (s *PatientService) DeletePatient(id int) error {

@@ -64,7 +64,7 @@ func (h *PatientHandler) CreatePatient(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Call the service method to create the patient
-	createdPatient, err := h.patientService.CreatePatient(patient)
+	createdPatient, err := h.patientService.CreatePatient(&patient)
 	if err != nil {
 		http.Error(w, "Failed to create patient", http.StatusInternalServerError)
 		return
@@ -84,7 +84,7 @@ func (h *PatientHandler) CreatePatient(w http.ResponseWriter, r *http.Request) {
 func (h *PatientHandler) GetPatient(w http.ResponseWriter, r *http.Request) {
 	// Parse the ID from the request parameters or URL path
 	// ...
-
+	var id = 0
 	// Call the service method to get the patient by ID
 	patient, err := h.patientService.GetPatientByID(id)
 	if err != nil {
@@ -116,7 +116,7 @@ func (h *PatientHandler) UpdatePatient(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Call the service method to update the patient
-	updatedPatient, err := h.patientService.UpdatePatient(id, patient)
+	updatedPatient, err := h.patientService.UpdatePatient(&patient)
 	if err != nil {
 		http.Error(w, "Failed to update patient", http.StatusInternalServerError)
 		return
@@ -136,7 +136,7 @@ func (h *PatientHandler) UpdatePatient(w http.ResponseWriter, r *http.Request) {
 func (h *PatientHandler) DeletePatient(w http.ResponseWriter, r *http.Request) {
 	// Parse the ID from the request parameters or URL path
 	// ...
-
+	var id = 0
 	// Call the service method to delete the patient
 	err := h.patientService.DeletePatient(id)
 	if err != nil {

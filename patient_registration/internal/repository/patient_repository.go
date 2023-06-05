@@ -10,6 +10,9 @@ import (
 type PatientRepository interface {
 	GetAllPatients() ([]*model.Patient, error)
 	GetPatientByID(id int) (*model.Patient, error)
+	CreatePatient(patient *model.Patient) (int64, error)
+	UpdatePatient(patient *model.Patient) (int64, error)
+	DeletePatient(id int) error
 }
 
 type patientRepository struct {
