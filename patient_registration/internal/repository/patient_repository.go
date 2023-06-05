@@ -21,7 +21,7 @@ func NewPatientRepository(db *sql.DB) PatientRepository {
 	}
 }
 
-func (r *PatientRepository) GetAllPatients() ([]*model.Patient, error) {
+func (r *patientRepository) GetAllPatients() ([]*model.Patient, error) {
 	rows, err := r.db.Query("SELECT * FROM patients")
 	if err != nil {
 		log.Printf("Failed to retrieve patients: %v", err)
@@ -58,7 +58,7 @@ func (r *PatientRepository) GetAllPatients() ([]*model.Patient, error) {
 	return patients, nil
 }
 
-func (r *PatientRepository) GetPatientByID(id int) (*model.Patient, error) {
+func (r *patientRepository) GetPatientByID(id int) (*model.Patient, error) {
 	query := "SELECT * FROM patients WHERE id = ?"
 	row := r.db.QueryRow(query, id)
 

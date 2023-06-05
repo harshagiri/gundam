@@ -20,7 +20,7 @@ func NewPatientRegistrationRepository(db *sql.DB) PatientRegistrationRepository 
 	}
 }
 
-func (r *PatientRegistrationRepository) GetAllRegistrations() ([]*model.PatientRegistration, error) {
+func (r *patientRegistrationRepository) GetAllRegistrations() ([]*model.PatientRegistration, error) {
 	rows, err := r.db.Query("SELECT * FROM patient_registrations")
 	if err != nil {
 		log.Printf("Failed to retrieve patient registrations: %v", err)
@@ -59,7 +59,7 @@ func (r *PatientRegistrationRepository) GetAllRegistrations() ([]*model.PatientR
 	return registrations, nil
 }
 
-func (r *PatientRegistrationRepository) GetRegistrationByID(id int) (*model.PatientRegistration, error) {
+func (r *patientRegistrationRepository) GetRegistrationByID(id int) (*model.PatientRegistration, error) {
 	query := "SELECT * FROM patient_registrations WHERE id = ?"
 	row := r.db.QueryRow(query, id)
 
