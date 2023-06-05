@@ -7,12 +7,16 @@ import (
 	"github.com/harshagiri/gundam/patient_registration/internal/model"
 )
 
-type PatientRepository struct {
+type PatientRepository interface {
+	// Define the methods of the PatientRepository interface
+}
+
+type patientRepository struct {
 	db *sql.DB
 }
 
-func NewPatientRepository(db *sql.DB) *PatientRepository {
-	return &PatientRepository{
+func NewPatientRepository(db *sql.DB) PatientRepository {
+	return &patientRepository{
 		db: db,
 	}
 }

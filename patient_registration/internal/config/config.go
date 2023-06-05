@@ -44,3 +44,7 @@ func LoadConfig() (Config, error) {
 func (c Config) DatabaseConnectionString() string {
 	return fmt.Sprintf("%s:%s@tcp(%s:%d)/database_name", c.Database.User, c.Database.Password, c.Database.Host, c.Database.Port)
 }
+
+func (c Config) GetServerPort() int {
+	return c.Server.Port
+}

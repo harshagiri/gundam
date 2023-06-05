@@ -9,6 +9,7 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/gorilla/mux"
 	"github.com/harshagiri/gundam/patient_registration/internal/config"
+	"github.com/harshagiri/gundam/patient_registration/internal/handler"
 	"github.com/harshagiri/gundam/patient_registration/internal/repository"
 	"github.com/harshagiri/gundam/patient_registration/internal/service"
 )
@@ -57,7 +58,7 @@ func main() {
 	router.HandleFunc("/registrations/{id}", registrationHandler.DeleteRegistration).Methods(http.MethodDelete)
 
 	// Start the server
-	addr := fmt.Sprintf(":%d", cfg.ServerPort)
+	addr := fmt.Sprintf(":%d", cfg.GetServerPort)
 	log.Printf("Server started on http://localhost%s", addr)
 	log.Fatal(http.ListenAndServe(addr, router))
 }
