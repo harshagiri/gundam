@@ -4,6 +4,7 @@ import axios from 'axios';
 const PatientList = () => {
   const [patients, setPatients] = useState([]);
   const [newPatient, setNewPatient] = useState({
+    id: '',
     first_name: '',
     last_name: '',
     date_of_birth: '',
@@ -11,6 +12,7 @@ const PatientList = () => {
     email: '',
     phone_number: '',
     address: '',
+    created_at: '2023-06-06',
   });
 
   useEffect(() => {
@@ -19,7 +21,7 @@ const PatientList = () => {
 
   const fetchPatients = async () => {
     try {
-      const response = await axios.get('http://localhost:8080/patients/');
+      const response = await axios.get('http://localhost:8080/patients');
       setPatients(response.data);
     } catch (error) {
       console.log(error);
@@ -37,11 +39,18 @@ const PatientList = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        'http://localhost:8080/patients/',
-        newPatient
+        'http://localhost:8080/patients',
+        newPatient,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*' // Set the CORS header here
+          }
+        }
       );
       setPatients([...patients, response.data]);
       setNewPatient({
+        id: '',
         first_name: '',
         last_name: '',
         date_of_birth: '',
@@ -49,6 +58,7 @@ const PatientList = () => {
         email: '',
         phone_number: '',
         address: '',
+        created_at: '2023-06-06',
       });
     } catch (error) {
       console.log(error);
@@ -102,6 +112,15 @@ const PatientList = () => {
       </table>
       <h2>Add New Patient</h2>
       <form onSubmit={addPatient}>
+      <label>
+          ID:
+          <input
+            type="text"
+            name="id"
+            value={newPatient.id}
+            onChange={handleInputChange}
+          />
+        </label>
         <label>
           First Name:
           <input
@@ -120,6 +139,7 @@ const PatientList = () => {
             onChange={handleInputChange}
           />
         </label>
+        <br/>
         <label>
           Date of Birth:
           <input
@@ -138,6 +158,7 @@ const PatientList = () => {
             onChange={handleInputChange}
           />
         </label>
+        <br/>
         <label>
           Email:
           <input
@@ -165,6 +186,7 @@ const PatientList = () => {
             onChange={handleInputChange}
           />
         </label>
+        <br/>
         <button type="submit">Add Patient</button>
       </form>
     </div>

@@ -44,9 +44,6 @@ func main() {
 	// Create the router
 	router := mux.NewRouter()
 
-	// Register the CORS middleware
-	router.Use(enableCORS)
-
 	// Register patient-related routes
 	router.HandleFunc("/patients", patientHandler.GetPatients).Methods(http.MethodGet)
 	router.HandleFunc("/patients", patientHandler.CreatePatient).Methods(http.MethodPost)
@@ -60,6 +57,9 @@ func main() {
 	router.HandleFunc("/registrations/{id}", registrationHandler.GetRegistration).Methods(http.MethodGet)
 	router.HandleFunc("/registrations/{id}", registrationHandler.UpdateRegistration).Methods(http.MethodPut)
 	router.HandleFunc("/registrations/{id}", registrationHandler.DeleteRegistration).Methods(http.MethodDelete)
+
+	// Register the CORS middleware
+	router.Use(enableCORS)
 
 	// Start the server
 	var port_addr = cfg.GetServerPort()
