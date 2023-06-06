@@ -7,6 +7,7 @@ import (
 	"strconv"
 
 	"github.com/go-chi/chi/v5"
+	"github.com/gorilla/mux"
 
 	"github.com/harshagiri/gundam/patient_registration/internal/model"
 	"github.com/harshagiri/gundam/patient_registration/internal/service"
@@ -49,24 +50,6 @@ func (h *PatientHandler) GetPatients(w http.ResponseWriter, r *http.Request) {
 	w.Write(jsonData)
 }
 
-func (h *PatientHandler) GetPatientByID(w http.ResponseWriter, r *http.Request) {
-	// Parse the ID from the request parameters or URL path
-	idParam := chi.URLParam(r, "id")
-	id, err := strconv.Atoi(idParam)
-
-	// Call the service method to get the patient by ID
-	patient, err := h.patientService.GetPatientByID(id)
-	_ = patient
-	if err != nil {
-		// Handle the error appropriately
-		http.Error(w, "Failed to get patient", http.StatusInternalServerError)
-		return
-	}
-
-	// Write the response
-	// ...
-}
-
 func (h *PatientHandler) CreatePatient(w http.ResponseWriter, r *http.Request) {
 	// Parse the request body and decode it into a Patient struct
 	var patient model.Patient
@@ -96,9 +79,16 @@ func (h *PatientHandler) CreatePatient(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *PatientHandler) GetPatient(w http.ResponseWriter, r *http.Request) {
+
+	vars := mux.Vars(r)
+	idParam := vars["id"]
+
 	// Parse the ID from the request parameters or URL path
-	// ...
-	var id = 0
+	//idParam := chi.URLParam(r, "id")
+	id, err := strconv.Atoi(idParam)
+	//log.Printf("IDParama ID passed is %s", idParam)
+	log.Printf("Patient ID passed is %d", id)
+
 	// Call the service method to get the patient by ID
 	patient, err := h.patientService.GetPatientByID(id)
 	if err != nil {
@@ -150,10 +140,17 @@ func (h *PatientHandler) UpdatePatient(w http.ResponseWriter, r *http.Request) {
 func (h *PatientHandler) DeletePatient(w http.ResponseWriter, r *http.Request) {
 	// Parse the ID from the request parameters or URL path
 	// ...
-	var id = 0
-	// Call the service method to delete the patient
-	err := h.patientService.DeletePatient(id)
+	idParam := chi.URLParam(r, "id")
+	id, err := strconv.Atoi(idParam)
+
 	if err != nil {
+		http.Error(w, "Failed to get patient", http.StatusInternalServerError)
+		return
+	}
+
+	// Call the service method to delete the patient
+	errr := h.patientService.DeletePatient(id)
+	if errr != nil {
 		http.Error(w, "Failed to delete patient", http.StatusInternalServerError)
 		return
 	}
