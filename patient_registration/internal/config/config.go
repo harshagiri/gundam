@@ -2,6 +2,7 @@ package config
 
 import (
 	"fmt"
+	"log"
 
 	"github.com/spf13/viper"
 )
@@ -46,5 +47,6 @@ func (c Config) DatabaseConnectionString() string {
 }
 
 func (c Config) GetServerPort() int {
+	log.Printf("Port is %d", c.Server.Port)
 	return c.Server.Port
 }
