@@ -17,7 +17,7 @@ import (
 func main() {
 	// Load configuration
 	cfg, err := config.LoadConfig()
-	log.Printf(cfg.DatabaseConnectionString())
+	log.Print(cfg.Database.Port)
 	if err != nil {
 		log.Fatalf("Failed to load configuration: %v", err)
 	}
@@ -59,7 +59,8 @@ func main() {
 	router.HandleFunc("/registrations/{id}", registrationHandler.DeleteRegistration).Methods(http.MethodDelete)
 
 	// Start the server
-	addr := fmt.Sprintf(":%d", cfg.GetServerPort)
+	var port_addr = cfg.GetServerPort()
+	addr := fmt.Sprintf(":%d", port_addr)
 	log.Printf("Server started on http://localhost%s", addr)
 	log.Fatal(http.ListenAndServe(addr, router))
 }
