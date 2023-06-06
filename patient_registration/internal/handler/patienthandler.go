@@ -2,6 +2,7 @@ package handler
 
 import (
 	"encoding/json"
+	"log"
 	"net/http"
 	"strconv"
 
@@ -33,7 +34,19 @@ func (h *PatientHandler) GetPatients(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Write the response
-	// ...
+
+	// Convert patients slice to JSON
+	jsonData, err := json.Marshal(patients)
+	if err != nil {
+		http.Error(w, "Failed to encode patients data", http.StatusInternalServerError)
+		return
+	}
+
+	// Set response headers
+	w.Header().Set("Content-Type", "application/json")
+
+	// Write JSON response
+	w.Write(jsonData)
 }
 
 func (h *PatientHandler) GetPatientByID(w http.ResponseWriter, r *http.Request) {
@@ -65,6 +78,7 @@ func (h *PatientHandler) CreatePatient(w http.ResponseWriter, r *http.Request) {
 
 	// Call the service method to create the patient
 	createdPatient, err := h.patientService.CreatePatient(&patient)
+	log.Print("Patient data is %s", patient)
 	if err != nil {
 		http.Error(w, "Failed to create patient", http.StatusInternalServerError)
 		return

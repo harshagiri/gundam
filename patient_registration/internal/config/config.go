@@ -24,7 +24,7 @@ func LoadConfig() (Config, error) {
 	viper.SetDefault("Database.Host", "localhost")
 	viper.SetDefault("Database.Port", 3306)
 	viper.SetDefault("Database.User", "root")
-	viper.SetDefault("Database.Password", "")
+	viper.SetDefault("Database.Password", "root")
 
 	//viper.SetConfigName("config")
 	//viper.SetConfigType("yaml")

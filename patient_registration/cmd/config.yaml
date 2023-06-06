@@ -5,4 +5,4 @@ Database:
   Host: localhost
   Port: 5432
   User: root
-  Password: 
+  Password: root
