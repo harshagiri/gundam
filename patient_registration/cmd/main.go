@@ -44,6 +44,9 @@ func main() {
 	// Create the router
 	router := mux.NewRouter()
 
+	// Register the CORS middleware
+	router.Use(enableCORS)
+
 	// Register patient-related routes
 	router.HandleFunc("/patients", patientHandler.GetPatients).Methods(http.MethodGet)
 	router.HandleFunc("/patients", patientHandler.CreatePatient).Methods(http.MethodPost)
@@ -58,9 +61,6 @@ func main() {
 	router.HandleFunc("/registrations/{id}", registrationHandler.UpdateRegistration).Methods(http.MethodPut)
 	router.HandleFunc("/registrations/{id}", registrationHandler.DeleteRegistration).Methods(http.MethodDelete)
 
-	// Register the CORS middleware
-	router.Use(enableCORS)
-
 	// Start the server
 	var port_addr = cfg.GetServerPort()
 	addr := fmt.Sprintf(":%d", port_addr)
@@ -72,7 +72,9 @@ func enableCORS(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Access-Control-Allow-Origin", "http://localhost:3000")
 		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
-		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization,  X-Requested-With")
+
+		r.Header.Set("Access-Control-Allow-Headers", "Content-Type, Authorization, X-Requested-With")
 
 		if r.Method == "OPTIONS" {
 			return
