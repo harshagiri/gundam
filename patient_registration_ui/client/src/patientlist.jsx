@@ -38,13 +38,16 @@ const PatientList = () => {
   const addPatient = async (e) => {
     e.preventDefault();
     try {
+
       const response = await axios.post(
         'http://localhost:8080/patients',
         newPatient,
         {
           headers: {
             'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin': '*' // Set the CORS header here
+            'Access-Control-Allow-Origin': 'http://localhost:3000',
+            'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+            'Access-Control-Allow-Headers': 'Content-Type, Authorization'
           }
         }
       );
