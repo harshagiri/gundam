@@ -7,6 +7,7 @@ import (
 	"net/http"
 
 	_ "github.com/go-sql-driver/mysql"
+	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 	"github.com/harshagiri/gundam/patient_registration/internal/config"
 	"github.com/harshagiri/gundam/patient_registration/internal/handler"
@@ -44,8 +45,15 @@ func main() {
 	// Create the router
 	router := mux.NewRouter()
 
+	// Enable CORS middleware
+	corsMiddleware := handlers.CORS(
+		handlers.AllowedOrigins([]string{"*"}),
+		handlers.AllowedMethods([]string{"GET", "POST", "PUT", "DELETE"}),
+		handlers.AllowedHeaders([]string{"Content-Type"}),
+	)
+
 	// Register the CORS middleware
-	router.Use(enableCORS)
+	//router.Use(enableCORS)
 
 	// Register patient-related routes
 	router.HandleFunc("/patients", patientHandler.GetPatients).Methods(http.MethodGet)
@@ -65,20 +73,18 @@ func main() {
 	var port_addr = cfg.GetServerPort()
 	addr := fmt.Sprintf(":%d", port_addr)
 	log.Printf("Server started on http://localhost%s", addr)
-	log.Fatal(http.ListenAndServe(addr, router))
+	log.Fatal(http.ListenAndServe(addr, corsMiddleware(router)))
 }
 
 func enableCORS(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Set("Access-Control-Allow-Origin", "http://localhost:3000")
-		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
-		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization,  X-Requested-With")
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Methods", "*")
+		w.Header().Set("Access-Control-Allow-Headers", "*")
 
-		r.Header.Set("Access-Control-Allow-Headers", "Content-Type, Authorization, X-Requested-With")
-
-		if r.Method == "OPTIONS" {
-			return
-		}
+		//w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE")
+		//w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+		//w.WriteHeader(http.StatusNoContent)
 
 		next.ServeHTTP(w, r)
 	})

@@ -38,29 +38,15 @@ const PatientList = () => {
   const addPatient = async (e) => {
     e.preventDefault();
     try {
-
-      const response = await axios.post(
-        'http://localhost:8080/patients',
-        newPatient,
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin': 'http://localhost:3000',
-            'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-            'Access-Control-Allow-Headers': 'Content-Type, Authorization, X-Requested-With'
-          }
-        }
-      );
-      setPatients([...patients, response.data]);
-      setNewPatient({
-        id: '',
-        first_name: '',
-        last_name: '',
-        date_of_birth: '',
-        gender: '',
-        email: '',
-        phone_number: '',
-        address: '',
+      const response = await axios.post('http://localhost:8080/patients', {
+        id: newPatient.id,
+        first_name: newPatient.first_name,
+        last_name: newPatient.last_name,
+        date_of_birth: newPatient.date_of_birth,
+        gender: newPatient.gender,
+        email: newPatient.email,
+        phone_number: newPatient.phone_number,
+        address: newPatient.address,
         created_at: '2023-06-06',
       });
     } catch (error) {
