@@ -6,7 +6,6 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/go-chi/chi/v5"
 	"github.com/gorilla/mux"
 
 	"github.com/harshagiri/gundam/patient_registration/internal/model"
@@ -67,11 +66,16 @@ func (h *PatientHandler) CreatePatient(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	log.Print(createdPatient)
+
 	// Write the response
 	response, err := json.Marshal(createdPatient)
+
 	if err != nil {
 		http.Error(w, "Failed to marshal response", http.StatusInternalServerError)
 		return
+	} else {
+		log.Printf("Marshalled response is %s", string(response))
 	}
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusCreated)
@@ -139,9 +143,14 @@ func (h *PatientHandler) UpdatePatient(w http.ResponseWriter, r *http.Request) {
 
 func (h *PatientHandler) DeletePatient(w http.ResponseWriter, r *http.Request) {
 	// Parse the ID from the request parameters or URL path
-	// ...
-	idParam := chi.URLParam(r, "id")
+	vars := mux.Vars(r)
+	idParam := vars["id"]
+
+	// Parse the ID from the request parameters or URL path
+	//idParam := chi.URLParam(r, "id")
 	id, err := strconv.Atoi(idParam)
+	//log.Printf("IDParama ID passed is %s", idParam)
+	log.Printf("Patient ID passed is %d", id)
 
 	if err != nil {
 		http.Error(w, "Failed to get patient", http.StatusInternalServerError)

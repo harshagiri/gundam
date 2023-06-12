@@ -2,6 +2,7 @@ package repository
 
 import (
 	"database/sql"
+	"fmt"
 	"log"
 
 	"github.com/harshagiri/gundam/patient_registration/internal/model"
@@ -10,7 +11,7 @@ import (
 type PatientRepository interface {
 	GetAllPatients() ([]*model.Patient, error)
 	GetPatientByID(id int) (*model.Patient, error)
-	CreatePatient(patient *model.Patient) (int64, error)
+	CreatePatient(patient *model.Patient) (*model.Patient, error)
 	UpdatePatient(patient *model.Patient) (int64, error)
 	DeletePatient(id int) error
 }
@@ -86,7 +87,7 @@ func (r *patientRepository) GetPatientByID(id int) (*model.Patient, error) {
 	return patient, nil
 }
 
-func (r *patientRepository) CreatePatient(patient *model.Patient) (int64, error) {
+func (r *patientRepository) CreatePatient(patient *model.Patient) (*model.Patient, error) {
 	// Execute the SQL query to insert the patient into the database
 	result, err := r.db.Exec("INSERT INTO patients (first_name, last_name, date_of_birth, gender, email, phone_number, address, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
 		patient.FirstName, patient.LastName, patient.DateOfBirth,
@@ -94,17 +95,23 @@ func (r *patientRepository) CreatePatient(patient *model.Patient) (int64, error)
 		patient.Address, patient.CreatedAt)
 	if err != nil {
 		log.Printf("Failed to insert patient: %v", err)
-		return 0, err
 	}
 
 	// Get the ID of the inserted patient
 	id, err := result.LastInsertId()
 	if err != nil {
 		log.Printf("Failed to get last inserted ID: %v", err)
-		return 0, err
 	}
 
-	return id, nil
+	newPatient, newPatientFetchError := r.GetPatientByID(int(id))
+
+	if newPatientFetchError != nil {
+		log.Printf("Error while fetching newlly created patient for %d", id)
+	} else {
+		fmt.Printf("New patient created is %v", newPatient)
+	}
+
+	return newPatient, nil
 }
 
 func (r *patientRepository) UpdatePatient(patient *model.Patient) (int64, error) {

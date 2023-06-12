@@ -50,6 +50,8 @@ func main() {
 		handlers.AllowedOrigins([]string{"*"}),
 		handlers.AllowedMethods([]string{"GET", "POST", "PUT", "DELETE"}),
 		handlers.AllowedHeaders([]string{"Content-Type"}),
+		handlers.ExposedHeaders([]string{}), // Optionally, specify any exposed headers
+		handlers.AllowCredentials(),         // Optionally, allow credentials (cookies, authorization headers, etc.)
 	)
 
 	// Register the CORS middleware

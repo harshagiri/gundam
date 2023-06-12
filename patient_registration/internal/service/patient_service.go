@@ -1,6 +1,8 @@
 package service
 
 import (
+	"log"
+
 	"github.com/harshagiri/gundam/patient_registration/internal/model"
 	"github.com/harshagiri/gundam/patient_registration/internal/repository"
 )
@@ -23,14 +25,13 @@ func (s *PatientService) GetPatientByID(id int) (*model.Patient, error) {
 	return s.patientRepo.GetPatientByID(id)
 }
 
-func (s *PatientService) CreatePatient(patient *model.Patient) (int64, error) {
+func (s *PatientService) CreatePatient(patient *model.Patient) (*model.Patient, error) {
 	// Perform any necessary validations or business logic checks
 
 	// Call the repository to create the patient
 	result, err := s.patientRepo.CreatePatient(patient)
 	if err != nil {
-		// Handle the error
-		return 0, err
+		log.Printf("error while creating patient %v", err)
 	}
 
 	return result, nil

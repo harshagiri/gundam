@@ -38,16 +38,43 @@ const PatientList = () => {
   const addPatient = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:8080/patients', {
-        id: newPatient.id,
-        first_name: newPatient.first_name,
-        last_name: newPatient.last_name,
-        date_of_birth: newPatient.date_of_birth,
-        gender: newPatient.gender,
-        email: newPatient.email,
-        phone_number: newPatient.phone_number,
-        address: newPatient.address,
-        created_at: '2023-06-06',
+
+      const response = await axios.post(
+        'http://localhost:8080/patients',
+        {
+          id: parseInt(newPatient.id),
+          first_name: newPatient.first_name,
+          last_name: newPatient.last_name,
+          date_of_birth: newPatient.date_of_birth,
+          gender: newPatient.gender,
+          email: newPatient.email,
+          phone_number: newPatient.phone_number,
+          address: newPatient.address,
+          created_at: (new Date()).toISOString().split('T')[0],
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+
+      console.log(response.data)
+
+      //add the current response to the list of already existing patient data
+      setPatients([...patients, response.data]);
+      
+      // Reset the newPatient state
+      setNewPatient({
+        id: '',
+        first_name: '',
+        last_name: '',
+        date_of_birth: '',
+        gender: '',
+        email: '',
+        phone_number: '',
+        address: '',
+        created_at: (new Date()).toISOString().split('T')[0],
       });
     } catch (error) {
       console.log(error);
