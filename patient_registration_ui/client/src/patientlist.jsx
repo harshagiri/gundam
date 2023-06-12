@@ -38,7 +38,6 @@ const PatientList = () => {
   const addPatient = async (e) => {
     e.preventDefault();
     try {
-
       const response = await axios.post(
         'http://localhost:8080/patients',
         {
@@ -50,7 +49,7 @@ const PatientList = () => {
           email: newPatient.email,
           phone_number: newPatient.phone_number,
           address: newPatient.address,
-          created_at: (new Date()).toISOString().split('T')[0],
+          created_at: new Date().toISOString().split('T')[0],
         },
         {
           headers: {
@@ -59,11 +58,11 @@ const PatientList = () => {
         }
       );
 
-      console.log(response.data)
+      console.log(response.data);
 
-      //add the current response to the list of already existing patient data
+      // Add the current response to the list of already existing patient data
       setPatients([...patients, response.data]);
-      
+
       // Reset the newPatient state
       setNewPatient({
         id: '',
@@ -74,7 +73,7 @@ const PatientList = () => {
         email: '',
         phone_number: '',
         address: '',
-        created_at: (new Date()).toISOString().split('T')[0],
+        created_at: new Date().toISOString().split('T')[0],
       });
     } catch (error) {
       console.log(error);
@@ -92,119 +91,123 @@ const PatientList = () => {
   };
 
   return (
-    <div>
-      <h2>Patients List</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Date of Birth</th>
-            <th>Gender</th>
-            <th>Email</th>
-            <th>Phone Number</th>
-            <th>Address</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {patients.map((patient) => (
-            <tr key={patient.id}>
-              <td>{patient.id}</td>
-              <td>{patient.first_name}</td>
-              <td>{patient.last_name}</td>
-              <td>{patient.date_of_birth}</td>
-              <td>{patient.gender}</td>
-              <td>{patient.email}</td>
-              <td>{patient.phone_number}</td>
-              <td>{patient.address}</td>
-              <td>
-                <button onClick={() => deletePatient(patient.id)}>Delete</button>
-              </td>
+    <div style={{ display: 'flex' }}>
+      <div style={{ width: '70%' }}>
+        <h2>Patients List</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>First Name</th>
+              <th>Last Name</th>
+              <th>Date of Birth</th>
+              <th>Gender</th>
+              <th>Email</th>
+              <th>Phone Number</th>
+              <th>Address</th>
+              <th>Actions</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
-      <h2>Add New Patient</h2>
-      <form onSubmit={addPatient}>
-      <label>
-          ID:
-          <input
-            type="text"
-            name="id"
-            value={newPatient.id}
-            onChange={handleInputChange}
-          />
-        </label>
-        <label>
-          First Name:
-          <input
-            type="text"
-            name="first_name"
-            value={newPatient.first_name}
-            onChange={handleInputChange}
-          />
-        </label>
-        <label>
-          Last Name:
-          <input
-            type="text"
-            name="last_name"
-            value={newPatient.last_name}
-            onChange={handleInputChange}
-          />
-        </label>
-        <br/>
-        <label>
-          Date of Birth:
-          <input
-            type="text"
-            name="date_of_birth"
-            value={newPatient.date_of_birth}
-            onChange={handleInputChange}
-          />
-        </label>
-        <label>
-          Gender:
-          <input
-            type="text"
-            name="gender"
-            value={newPatient.gender}
-            onChange={handleInputChange}
-          />
-        </label>
-        <br/>
-        <label>
-          Email:
-          <input
-            type="text"
-            name="email"
-            value={newPatient.email}
-            onChange={handleInputChange}
-          />
-        </label>
-        <label>
-          Phone Number:
-          <input
-            type="text"
-            name="phone_number"
-            value={newPatient.phone_number}
-            onChange={handleInputChange}
-          />
-        </label>
-        <label>
-          Address:
-          <input
-            type="text"
-            name="address"
-            value={newPatient.address}
-            onChange={handleInputChange}
-          />
-        </label>
-        <br/>
-        <button type="submit">Add Patient</button>
-      </form>
+          </thead>
+          <tbody>
+            {patients.map((patient) => (
+              <tr key={patient.id}>
+                <td>{patient.id}</td>
+                <td>{patient.first_name}</td>
+                <td>{patient.last_name}</td>
+                <td>{patient.date_of_birth}</td>
+                <td>{patient.gender}</td>
+                <td>{patient.email}</td>
+                <td>{patient.phone_number}</td>
+                <td>{patient.address}</td>
+                <td>
+                  <button onClick={() => deletePatient(patient.id)}>Delete</button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <div style={{ width: '30%', padding: '20px' }}>
+        <h2>Add New Patient</h2>
+        <form onSubmit={addPatient} style={{ display: 'grid', gap: '10px' }}>
+          <div>
+            <label style={{ display: 'inline-block', width: '100px' }}>ID:</label>
+            <input
+              type="text"
+              name="id"
+              value={newPatient.id}
+              onChange={handleInputChange}
+            />
+          </div>
+          <div>
+            <label style={{ display: 'inline-block', width: '100px' }}>First Name:</label>
+            <input
+              type="text"
+              name="first_name"
+              value={newPatient.first_name}
+              onChange={handleInputChange}
+            />
+          </div>
+          <div>
+            <label style={{ display: 'inline-block', width: '100px' }}>Last Name:</label>
+            <input
+              type="text"
+              name="last_name"
+              value={newPatient.last_name}
+              onChange={handleInputChange}
+            />
+          </div>
+          <div>
+            <label style={{ display: 'inline-block', width: '100px' }}>Date of Birth:</label>
+            <input
+              type="text"
+              name="date_of_birth"
+              value={newPatient.date_of_birth}
+              onChange={handleInputChange}
+            />
+          </div>
+          <div>
+            <label style={{ display: 'inline-block', width: '100px' }}>Gender:</label>
+            <input
+              type="text"
+              name="gender"
+              value={newPatient.gender}
+              onChange={handleInputChange}
+            />
+          </div>
+          <div>
+            <label style={{ display: 'inline-block', width: '100px' }}>Email:</label>
+            <input
+              type="text"
+              name="email"
+              value={newPatient.email}
+              onChange={handleInputChange}
+            />
+          </div>
+          <div>
+            <label style={{ display: 'inline-block', width: '100px' }}>Phone Number:</label>
+            <input
+              type="text"
+              name="phone_number"
+              value={newPatient.phone_number}
+              onChange={handleInputChange}
+            />
+          </div>
+          <div>
+            <label style={{ display: 'inline-block', width: '100px' }}>Address:</label>
+            <input
+              type="text"
+              name="address"
+              value={newPatient.address}
+              onChange={handleInputChange}
+            />
+          </div>
+          <div>
+            <button type="submit">Add Patient</button>
+          </div>
+        </form>
+      </div>
+
     </div>
   );
 };
