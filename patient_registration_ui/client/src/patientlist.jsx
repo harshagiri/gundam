@@ -12,7 +12,7 @@ const PatientList = () => {
     email: '',
     phone_number: '',
     address: '',
-    created_at: '2023-06-06',
+    created_at: '',
   });
 
   useEffect(() => {
@@ -119,6 +119,9 @@ const PatientList = () => {
                 <td>{patient.email}</td>
                 <td>{patient.phone_number}</td>
                 <td>{patient.address}</td>
+                <td>
+                  <button >Update</button>
+                </td>
                 <td>
                   <button onClick={() => deletePatient(patient.id)}>Delete</button>
                 </td>
